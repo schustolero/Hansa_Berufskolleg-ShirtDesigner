@@ -435,6 +435,7 @@ function renderCart() {
 
 function addCurrentShirtToOrder() {
   orderMessage.textContent = "";
+  orderMessage.classList.remove("success");
   const item = getCurrentShirtSelection();
   if (!item) return;
 
@@ -525,128 +526,7 @@ if (orderForm) {
   });
 }
 
+
+// Startzustand
 changeShirtColor("#ffffff", "White", "weiss", "");
-  recolorActiveMotif("#000000", "Black");
-  canvas.requestRenderAll();
-});
-
-canvas.on("object:modified", function(event) {
-  const object = event.target;
-  if (!object) return;
-  object.setCoords();
-  const bounds = object.getBoundingRect(true, true);
-  let left = object.left, top = object.top;
-  if (bounds.left < 0) left += -bounds.left;
-  if (bounds.left + bounds.width > canvas.width) left -= bounds.left + bounds.width - canvas.width;
-  if (bounds.top < 0) top += -bounds.top;
-  if (bounds.top + bounds.height > canvas.height) top -= bounds.top + bounds.height - canvas.height;
-  object.set({ left, top }); object.setCoords(); canvas.requestRenderAll(); saveCurrentView();
-});
-
-
-
-// v11: Größe, Menge und Bestellübersicht
-const shirtSize = document.getElementById("shirtSize");
-const shirtQuantity = document.getElementById("shirtQuantity");
-const orderBtn = document.getElementById("orderBtn");
-const orderMessage = document.getElementById("orderMessage");
-const orderModal = document.getElementById("orderModal");
-const orderSummary = document.getElementById("orderSummary");
-
-const orderForm = document.getElementById("orderForm");
-const formShirtColor = document.getElementById("formShirtColor");
-const formMotif = document.getElementById("formMotif");
-const formMotifColor = document.getElementById("formMotifColor");
-const formSize = document.getElementById("formSize");
-const formQuantity = document.getElementById("formQuantity");
-const sendOrderMessage = document.getElementById("sendOrderMessage");
-
-function getSelectedMotifName() {
-  const active = document.querySelector(".motif-btn.active");
-  if (!active) return "Noch kein Motiv gewählt";
-  return active.textContent.replace(/\s+/g, " ").trim();
-}
-
-function summaryRow(label, value) {
-  const row = document.createElement("div");
-  row.className = "order-summary-row";
-  const key = document.createElement("span");
-  key.textContent = label;
-  const val = document.createElement("strong");
-  val.textContent = value;
-  row.append(key, val);
-  return row;
-}
-
-function openOrderSummary() {
-  const size = shirtSize.value;
-  const quantity = Math.max(1, Math.min(99, Number(shirtQuantity.value) || 1));
-  shirtQuantity.value = quantity;
-  orderMessage.textContent = "";
-
-  if (!size) {
-    orderMessage.textContent = "Bitte zuerst eine Größe auswählen.";
-    shirtSize.focus();
-    return;
-  }
-  const activeMotif = document.querySelector(".motif-btn.active");
-  if (!activeMotif) {
-    orderMessage.textContent = "Bitte zuerst ein Motiv auswählen.";
-    return;
-  }
-
-  const shirtColorValue = currentColorName.textContent || "White";
-  const motifValue = getSelectedMotifName();
-  const motifColorValue = currentMotifColorName.textContent || currentMotifColorLabel;
-
-  orderSummary.replaceChildren(
-    summaryRow("T-Shirt Farbe", shirtColorValue),
-    summaryRow("Motiv", motifValue),
-    summaryRow("Motivfarbe", motifColorValue),
-    summaryRow("Größe", size),
-    summaryRow("Menge", String(quantity))
-  );
-
-  formShirtColor.value = shirtColorValue;
-  formMotif.value = motifValue;
-  formMotifColor.value = motifColorValue;
-  formSize.value = size;
-  formQuantity.value = String(quantity);
-  if (sendOrderMessage) {
-    sendOrderMessage.textContent = "";
-    sendOrderMessage.classList.remove("success");
-  }
-
-  orderModal.hidden = false;
-  document.body.style.overflow = "hidden";
-}
-
-function closeOrderSummary() {
-  orderModal.hidden = true;
-  document.body.style.overflow = "";
-}
-
-if (orderBtn) orderBtn.addEventListener("click", openOrderSummary);
-document.querySelectorAll("[data-close-order]").forEach(el => el.addEventListener("click", closeOrderSummary));
-document.addEventListener("keydown", e => { if (e.key === "Escape" && !orderModal.hidden) closeOrderSummary(); });
-
-
-// v13: Validierung vor dem Versand. Der eigentliche Versand läuft über FormSubmit.
-if (orderForm) {
-  orderForm.addEventListener("submit", (event) => {
-    const name = document.getElementById("customerName").value.trim();
-    const customerClass = document.getElementById("customerClass").value.trim();
-    const email = document.getElementById("customerEmail").value.trim();
-
-    if (!name || !customerClass || !email) {
-      event.preventDefault();
-      sendOrderMessage.textContent = "Bitte Name, Klasse/Abteilung und E-Mail vollständig ausfüllen.";
-      return;
-    }
-
-    sendOrderMessage.textContent = "Bestellung wird gesendet …";
-    sendOrderMessage.classList.add("success");
-  });
-}
-
-changeShirtColor("#ffffff", "White", "weiss", "");
+updateActiveMotifColorButton(currentMotifColor, currentMotifColorLabel);
