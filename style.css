@@ -665,3 +665,19 @@ input {
 
 /* Motivfarben kompakt wie zuvor: nur Farbname, keine Pantone-Angabe */
 .motif-color-note { display: none !important; }
+
+
+/* v9: Druckbereich-Rahmen definitiv ausblenden */
+#printZone,
+.print-zone {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+#printZone::before,
+#printZone::after,
+.print-zone::before,
+.print-zone::after {
+  content: none !important;
+  display: none !important;
+}
