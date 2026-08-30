@@ -33,9 +33,6 @@ const canvas = new fabric.Canvas("designCanvas", {
   preserveObjectStacking: true
 });
 
-const centerBtn = document.getElementById("centerBtn");
-const duplicateBtn = document.getElementById("duplicateBtn");
-const deleteBtn = document.getElementById("deleteBtn");
 const resetBtn = document.getElementById("resetBtn");
 const viewButtons = document.querySelectorAll(".view-btn");
 const shirtColorButtons = document.querySelectorAll(".shirt-color");
@@ -57,6 +54,31 @@ let currentMotifColorLabel = "Black";
 const viewStates = { front: null, back: null };
 const baseImages = { front: null, back: null };
 const motifSourceCache = new Map();
+
+function enhanceMotifColorCards() {
+  motifColorButtons.forEach(button => {
+    const title = button.getAttribute("title") || "";
+    const label = button.querySelector(".motif-color-label");
+    if (!label || button.querySelector(".motif-color-note")) return;
+    const parts = title.split("–");
+    const noteText = parts.length > 1 ? parts.slice(1).join("–").trim() : "";
+    if (!noteText) return;
+    const note = document.createElement("span");
+    note.className = "motif-color-note";
+    note.textContent = noteText;
+    button.appendChild(note);
+  });
+}
+
+function updateActiveMotifColorButton(color, label) {
+  motifColorButtons.forEach(button => {
+    const matchesColor = (button.dataset.color || "").toLowerCase() === String(color || "").toLowerCase();
+    const matchesLabel = (button.dataset.name || "") === (label || "");
+    button.classList.toggle("active", matchesColor && matchesLabel);
+  });
+}
+
+enhanceMotifColorCards();
 
 function getBaseSrc(view) {
   return view === "back" ? "shirt-back-template.png" : "shirt-front-template.png";
@@ -196,19 +218,25 @@ async function recolorMotifSource(src, color) {
 }
 
 function configureFabricImage(image, motifId, motifSrc) {
-  const maxWidth = canvas.width * 0.70;
-  const maxHeight = canvas.height * 0.48;
+  // Beide Hansa-Motive haben eine feste, nicht veränderbare Platzierung.
+  const maxWidth = canvas.width * 0.72;
+  const maxHeight = canvas.height * 0.42;
   const scale = Math.min(maxWidth / image.width, maxHeight / image.height, 1);
   image.set({
     left: canvas.width / 2,
-    top: canvas.height / 2,
+    top: canvas.height * 0.32,
     originX: "center", originY: "center",
     scaleX: scale, scaleY: scale,
-    selectable: true, evented: true,
-    centeredRotation: true, centeredScaling: true,
-    transparentCorners: false,
-    cornerColor: "#ffffff", cornerStrokeColor: "#111111",
-    borderColor: "#f28c00", cornerSize: 11, padding: 3,
+    selectable: false,
+    evented: false,
+    hasControls: false,
+    hasBorders: false,
+    lockMovementX: true,
+    lockMovementY: true,
+    lockScalingX: true,
+    lockScalingY: true,
+    lockRotation: true,
+    hoverCursor: "default",
     motifId, motifSrc,
     motifColor: currentMotifColor,
     motifColorLabel: currentMotifColorLabel
@@ -226,7 +254,7 @@ async function addSelectedMotif(motifId, motifSrc) {
     fabric.Image.fromURL(dataUrl, function(image) {
       configureFabricImage(image, motifId, motifSrc);
       canvas.add(image);
-      canvas.setActiveObject(image);
+      canvas.discardActiveObject();
       image.setCoords();
       canvas.requestRenderAll();
       viewStates.front = canvas.toJSON(["motifId", "motifSrc", "motifColor", "motifColorLabel"]);
@@ -246,23 +274,38 @@ async function recolorActiveMotif(color, label) {
   currentMotifColor = color;
   currentMotifColorLabel = label;
   currentMotifColorName.textContent = label;
-  motifColorButtons.forEach(button => button.classList.toggle("active", button.dataset.color.toLowerCase() === color.toLowerCase()));
+  updateActiveMotifColorButton(color, label);
 
-  const object = getActiveObject();
-  if (!object || !object.motifSrc || object.type !== "image") return;
+  // Die Motive sind absichtlich nicht auswählbar. Daher direkt das feste Motiv einfärben.
+  if (currentView !== "front") {
+    switchView("front");
+    await new Promise(resolve => requestAnimationFrame(resolve));
+  }
+
+  const object = canvas.getObjects().find(obj => obj && obj.motifSrc && obj.type === "image");
+  if (!object) return;
+
   const oldWidth = object.getScaledWidth();
   const oldHeight = object.getScaledHeight();
-  const oldLeft = object.left, oldTop = object.top, oldAngle = object.angle || 0;
   try {
     const dataUrl = await recolorMotifSource(object.motifSrc, color);
     object.setSrc(dataUrl, () => {
       const targetScale = Math.min(oldWidth / object.width, oldHeight / object.height);
       object.set({
-        left: oldLeft, top: oldTop, angle: oldAngle,
+        left: canvas.width / 2,
+        top: canvas.height * 0.32,
+        originX: "center", originY: "center",
+        angle: 0,
         scaleX: targetScale, scaleY: targetScale,
+        selectable: false, evented: false,
+        hasControls: false, hasBorders: false,
+        lockMovementX: true, lockMovementY: true,
+        lockScalingX: true, lockScalingY: true,
+        lockRotation: true,
         motifColor: color, motifColorLabel: label
       });
       object.setCoords();
+      canvas.discardActiveObject();
       canvas.requestRenderAll();
       saveCurrentView();
     }, { crossOrigin: "anonymous" });
@@ -274,37 +317,6 @@ async function recolorActiveMotif(color, label) {
 motifColorButtons.forEach(button => button.addEventListener("click", () => {
   recolorActiveMotif(button.dataset.color, button.dataset.name);
 }));
-
-centerBtn.addEventListener("click", function() {
-  const object = getActiveObject();
-  if (!object) return;
-  object.set({ left: canvas.width / 2, top: canvas.height / 2, originX: "center", originY: "center" });
-  object.setCoords(); canvas.requestRenderAll(); saveCurrentView();
-});
-
-duplicateBtn.addEventListener("click", function() {
-  const object = getActiveObject();
-  if (!object) return;
-  object.clone(function(clone) {
-    clone.set({ left: (object.left || 0) + 15, top: (object.top || 0) + 15 });
-    canvas.add(clone); canvas.setActiveObject(clone); clone.setCoords(); canvas.requestRenderAll(); saveCurrentView();
-  }, ["motifId", "motifSrc", "motifColor", "motifColorLabel"]);
-});
-
-function deleteSelected() {
-  const activeObjects = canvas.getActiveObjects();
-  if (!activeObjects.length) return;
-  activeObjects.forEach(object => canvas.remove(object));
-  canvas.discardActiveObject(); canvas.requestRenderAll(); saveCurrentView();
-}
-
-deleteBtn.addEventListener("click", deleteSelected);
-document.addEventListener("keydown", function(event) {
-  if (event.key !== "Delete" && event.key !== "Backspace") return;
-  const activeElement = document.activeElement;
-  if (activeElement && (activeElement.tagName === "INPUT" || activeElement.tagName === "TEXTAREA")) return;
-  event.preventDefault(); deleteSelected();
-});
 
 resetBtn.addEventListener("click", function() {
   viewStates.front = null; viewStates.back = null;
@@ -319,17 +331,6 @@ resetBtn.addEventListener("click", function() {
   recolorActiveMotif("#000000", "Black");
   canvas.requestRenderAll();
 });
-
-canvas.on("selection:created", syncMotifColorFromSelection);
-canvas.on("selection:updated", syncMotifColorFromSelection);
-function syncMotifColorFromSelection() {
-  const object = getActiveObject();
-  if (!object || !object.motifColor) return;
-  currentMotifColor = object.motifColor;
-  currentMotifColorLabel = object.motifColorLabel || "Motivfarbe";
-  currentMotifColorName.textContent = currentMotifColorLabel;
-  motifColorButtons.forEach(button => button.classList.toggle("active", button.dataset.color.toLowerCase() === currentMotifColor.toLowerCase()));
-}
 
 canvas.on("object:modified", function(event) {
   const object = event.target;
