@@ -8,3 +8,5 @@ Hansa Berufskolleg – ShirtDesigner v2
 - Komplette bereitgestellte Motivfarbpalette eingebaut
 - Shirtfarbe und Motivfarbe sind getrennte Funktionen
 - Automatischer Firebase/GitHub-Workflow bleibt kompatibel
+
+V6: Beide Motive haben feste, motivspezifische Positionen und Groessen und sind vollstaendig gesperrt.

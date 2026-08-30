@@ -139,7 +139,13 @@ function loadView(view) {
   canvas.clear();
   canvas.backgroundColor = "transparent";
   const state = viewStates[view];
-  if (state) canvas.loadFromJSON(state, () => canvas.requestRenderAll());
+  if (state) canvas.loadFromJSON(state, () => {
+    canvas.getObjects().forEach(obj => {
+      if (obj && obj.motifId) applyFixedMotifLayout(obj, obj.motifId);
+    });
+    canvas.discardActiveObject();
+    canvas.requestRenderAll();
+  });
   else canvas.requestRenderAll();
 }
 
@@ -217,26 +223,35 @@ async function recolorMotifSource(src, color) {
   return c.toDataURL("image/png");
 }
 
-function configureFabricImage(image, motifId, motifSrc) {
-  // Beide Hansa-Motive haben eine feste, nicht veränderbare Platzierung.
-  const maxWidth = canvas.width * 0.72;
-  const maxHeight = canvas.height * 0.42;
+const FIXED_MOTIF_LAYOUTS = {
+  college: { left: 0.50, top: 0.31, maxWidth: 0.72, maxHeight: 0.36 },
+  script:  { left: 0.50, top: 0.31, maxWidth: 0.72, maxHeight: 0.36 }
+};
+
+function applyFixedMotifLayout(image, motifId) {
+  const layout = FIXED_MOTIF_LAYOUTS[motifId] || FIXED_MOTIF_LAYOUTS.college;
+  const maxWidth = canvas.width * layout.maxWidth;
+  const maxHeight = canvas.height * layout.maxHeight;
   const scale = Math.min(maxWidth / image.width, maxHeight / image.height, 1);
   image.set({
-    left: canvas.width / 2,
-    top: canvas.height * 0.32,
+    left: canvas.width * layout.left,
+    top: canvas.height * layout.top,
     originX: "center", originY: "center",
+    angle: 0,
     scaleX: scale, scaleY: scale,
-    selectable: false,
-    evented: false,
-    hasControls: false,
-    hasBorders: false,
-    lockMovementX: true,
-    lockMovementY: true,
-    lockScalingX: true,
-    lockScalingY: true,
+    selectable: false, evented: false,
+    hasControls: false, hasBorders: false,
+    lockMovementX: true, lockMovementY: true,
+    lockScalingX: true, lockScalingY: true,
     lockRotation: true,
-    hoverCursor: "default",
+    hoverCursor: "default"
+  });
+  image.setCoords();
+}
+
+function configureFabricImage(image, motifId, motifSrc) {
+  applyFixedMotifLayout(image, motifId);
+  image.set({
     motifId, motifSrc,
     motifColor: currentMotifColor,
     motifColorLabel: currentMotifColorLabel
@@ -291,20 +306,8 @@ async function recolorActiveMotif(color, label) {
     const dataUrl = await recolorMotifSource(object.motifSrc, color);
     object.setSrc(dataUrl, () => {
       const targetScale = Math.min(oldWidth / object.width, oldHeight / object.height);
-      object.set({
-        left: canvas.width / 2,
-        top: canvas.height * 0.32,
-        originX: "center", originY: "center",
-        angle: 0,
-        scaleX: targetScale, scaleY: targetScale,
-        selectable: false, evented: false,
-        hasControls: false, hasBorders: false,
-        lockMovementX: true, lockMovementY: true,
-        lockScalingX: true, lockScalingY: true,
-        lockRotation: true,
-        motifColor: color, motifColorLabel: label
-      });
-      object.setCoords();
+      object.set({ motifColor: color, motifColorLabel: label });
+      applyFixedMotifLayout(object, object.motifId || "college");
       canvas.discardActiveObject();
       canvas.requestRenderAll();
       saveCurrentView();
