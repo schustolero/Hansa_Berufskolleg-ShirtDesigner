@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title id="pageTitle">T-Shirt Designer</title>
-  <link rel="stylesheet" href="style.css?v=10">
+  <link rel="stylesheet" href="style.css?v=11">
 
 <style id="v3-centering-fix">
 @media (max-width:760px){
@@ -170,6 +170,26 @@
       </div>
     </section>
 
+    <section class="tool-section order-section">
+      <h3>Größe & Menge</h3>
+      <div class="order-fields">
+        <label class="order-field">
+          <span>Größe</span>
+          <select id="shirtSize">
+            <option value="">Bitte wählen</option>
+            <option>XS</option><option>S</option><option>M</option><option>L</option>
+            <option>XL</option><option>2XL</option><option>3XL</option><option>4XL</option><option>5XL</option>
+          </select>
+        </label>
+        <label class="order-field">
+          <span>Menge</span>
+          <input id="shirtQuantity" type="number" min="1" max="99" value="1" inputmode="numeric">
+        </label>
+      </div>
+      <button type="button" id="orderBtn" class="primary-btn">Bestellung vorbereiten</button>
+      <p id="orderMessage" class="order-message" aria-live="polite"></p>
+    </section>
+
     <div class="sidebar-bottom">
       <button type="button" id="resetBtn" class="secondary-btn">
         Design zurücksetzen
@@ -222,9 +242,52 @@
 
 </div>
 
+<div id="orderModal" class="order-modal" hidden>
+  <div class="order-modal-backdrop" data-close-order></div>
+  <div class="order-modal-card" role="dialog" aria-modal="true" aria-labelledby="orderModalTitle">
+    <button type="button" class="order-modal-close" data-close-order aria-label="Schließen">×</button>
+    <h2 id="orderModalTitle">Bestellung abschicken</h2>
+    <div id="orderSummary" class="order-summary"></div>
+
+    <form id="orderForm" class="contact-form" action="https://formsubmit.co/textilien@proton.me" method="POST">
+      <input type="hidden" name="_subject" value="Neue Hansa Berufskolleg T-Shirt Bestellung">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="T-Shirt Farbe" id="formShirtColor">
+      <input type="hidden" name="Motiv" id="formMotif">
+      <input type="hidden" name="Motivfarbe" id="formMotifColor">
+      <input type="hidden" name="Größe" id="formSize">
+      <input type="hidden" name="Menge" id="formQuantity">
+
+      <label class="contact-field">
+        <span>Name *</span>
+        <input type="text" name="Name" id="customerName" required autocomplete="name">
+      </label>
+      <label class="contact-field">
+        <span>Klasse / Abteilung *</span>
+        <input type="text" name="Klasse / Abteilung" id="customerClass" required>
+      </label>
+      <label class="contact-field">
+        <span>E-Mail *</span>
+        <input type="email" name="E-Mail" id="customerEmail" required autocomplete="email">
+      </label>
+      <label class="contact-field">
+        <span>Telefon <small>(optional)</small></span>
+        <input type="tel" name="Telefon" id="customerPhone" autocomplete="tel">
+      </label>
+
+      <p class="order-modal-note">Die Bestellung wird an <strong>textilien@proton.me</strong> gesendet.</p>
+      <button type="submit" class="primary-btn" id="sendOrderBtn">Bestellung absenden</button>
+      <p id="sendOrderMessage" class="send-order-message" aria-live="polite"></p>
+    </form>
+
+    <button type="button" class="secondary-btn order-back-btn" data-close-order>Zurück zum Designer</button>
+  </div>
+</div>
+
 <script src="shop-config.js?v=hansa1"></script>
 <script src="https://cdn.jsdelivr.net/npm/fabric@5.3.0/dist/fabric.min.js"></script>
-<script src="script.js?v=9"></script>
+<script src="script.js?v=13"></script>
 
 </body>
 </html>
