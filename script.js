@@ -56,18 +56,7 @@ const baseImages = { front: null, back: null };
 const motifSourceCache = new Map();
 
 function enhanceMotifColorCards() {
-  motifColorButtons.forEach(button => {
-    const title = button.getAttribute("title") || "";
-    const label = button.querySelector(".motif-color-label");
-    if (!label || button.querySelector(".motif-color-note")) return;
-    const parts = title.split("–");
-    const noteText = parts.length > 1 ? parts.slice(1).join("–").trim() : "";
-    if (!noteText) return;
-    const note = document.createElement("span");
-    note.className = "motif-color-note";
-    note.textContent = noteText;
-    button.appendChild(note);
-  });
+  // Pantone-/Zusatztexte bewusst ausgeblendet.
 }
 
 function updateActiveMotifColorButton(color, label) {
