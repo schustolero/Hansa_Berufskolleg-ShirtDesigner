@@ -69,15 +69,91 @@
       </p>
     </section>
 
-    <section class="tool-section upload-section">
-      <h3>Logo / Bild</h3>
+    <section class="tool-section motif-section">
+      <h3>Motive</h3>
+      <p class="motif-help">Bitte ein Motiv auswählen. Es wird automatisch mittig auf der Vorderseite platziert.</p>
+      <div class="motif-grid">
+        <button type="button" class="motif-btn" data-motif="script" data-src="motiv-hansa-script.png" aria-label="Hansa Script Motiv">
+          <span class="motif-preview"><img src="motiv-hansa-script.png" alt="Hansa Script"></span>
+          <span>Hansa Script</span>
+        </button>
+        <button type="button" class="motif-btn" data-motif="college" data-src="motiv-hansa-college.png" aria-label="Hansa College Motiv">
+          <span class="motif-preview"><img src="motiv-hansa-college.png" alt="Hansa College"></span>
+          <span>Hansa College</span>
+        </button>
+      </div>
+    </section>
 
-      <label class="upload-btn">
-        Logo hochladen
-        <input type="file" id="imageUpload" accept="image/png,image/jpeg,image/webp">
-      </label>
-
-      <p class="hint">PNG, JPG oder WEBP</p>
+    <section class="tool-section motif-color-section">
+      <h3>Motivfarbe</h3>
+      <div class="motif-colors">
+        <button type="button" class="motif-color" data-color="#474946" data-name="Anthracite" title="Anthracite – ca. Pantone 6217C" style="--motif-swatch:#474946"><span class="motif-color-swatch"></span><span class="motif-color-label">Anthracite</span></button>
+        <button type="button" class="motif-color" data-color="#A5D542" data-name="Apple Green" title="Apple Green – ca. Pantone 375C" style="--motif-swatch:#A5D542"><span class="motif-color-swatch"></span><span class="motif-color-label">Apple Green</span></button>
+        <button type="button" class="motif-color" data-color="#317176" data-name="Aqua Green" title="Aqua Green – ca. Pantone 322C" style="--motif-swatch:#317176"><span class="motif-color-swatch"></span><span class="motif-color-label">Aqua Green</span></button>
+        <button type="button" class="motif-color" data-color="#ECA7BC" data-name="Baby Pink" title="Baby Pink – ca. Pantone 189C" style="--motif-swatch:#ECA7BC"><span class="motif-color-swatch"></span><span class="motif-color-label">Baby Pink</span></button>
+        <button type="button" class="motif-color" data-color="#F0E4C1" data-name="Beige" title="Beige – ca. Pantone 7401C" style="--motif-swatch:#F0E4C1"><span class="motif-color-swatch"></span><span class="motif-color-label">Beige</span></button>
+        <button type="button" class="motif-color active" data-color="#000000" data-name="Black" title="Black – ca. Pantone Black 3C" style="--motif-swatch:#000000"><span class="motif-color-swatch"></span><span class="motif-color-label">Black</span></button>
+        <button type="button" class="motif-color" data-color="#642C32" data-name="Bordeaux" title="Bordeaux – ca. Pantone 19-1930TCX" style="--motif-swatch:#642C32"><span class="motif-color-swatch"></span><span class="motif-color-label">Bordeaux</span></button>
+        <button type="button" class="motif-color" data-color="#93ACD1" data-name="Bright Blue" title="Bright Blue – ca. Pantone 2156C" style="--motif-swatch:#93ACD1"><span class="motif-color-swatch"></span><span class="motif-color-label">Bright Blue</span></button>
+        <button type="button" class="motif-color" data-color="#955D42" data-name="Bright Copper" title="Bright Copper – ca. Pantone 39-6C" style="--motif-swatch:#955D42"><span class="motif-color-swatch"></span><span class="motif-color-label">Bright Copper</span></button>
+        <button type="button" class="motif-color" data-color="#DDBE68" data-name="Bright Gold" title="Bright Gold – ca. Pantone 15-1050TCX" style="--motif-swatch:#DDBE68"><span class="motif-color-swatch"></span><span class="motif-color-label">Bright Gold</span></button>
+        <button type="button" class="motif-color" data-color="#9D86B3" data-name="Bright Lavender" title="Bright Lavender – ca. Pantone 4121C" style="--motif-swatch:#9D86B3"><span class="motif-color-swatch"></span><span class="motif-color-label">Bright Lavender</span></button>
+        <button type="button" class="motif-color" data-color="#B3DB88" data-name="Bright Lime" title="Bright Lime – ca. Pantone 366U" style="--motif-swatch:#B3DB88"><span class="motif-color-swatch"></span><span class="motif-color-label">Bright Lime</span></button>
+        <button type="button" class="motif-color" data-color="#A03271" data-name="Bright Pink" title="Bright Pink – ca. Pantone 675C" style="--motif-swatch:#A03271"><span class="motif-color-swatch"></span><span class="motif-color-label">Bright Pink</span></button>
+        <button type="button" class="motif-color" data-color="#8E3128" data-name="Bright Red" title="Bright Red – ca. Pantone 7620C" style="--motif-swatch:#8E3128"><span class="motif-color-swatch"></span><span class="motif-color-label">Bright Red</span></button>
+        <button type="button" class="motif-color" data-color="#A6A9AA" data-name="Bright Silver" title="Bright Silver – ca. Pantone 10077C" style="--motif-swatch:#A6A9AA"><span class="motif-color-swatch"></span><span class="motif-color-label">Bright Silver</span></button>
+        <button type="button" class="motif-color" data-color="#C7AFCE" data-name="Bright Violet" title="Bright Violet – ca. Pantone 7437C" style="--motif-swatch:#C7AFCE"><span class="motif-color-swatch"></span><span class="motif-color-label">Bright Violet</span></button>
+        <button type="button" class="motif-color" data-color="#F7D35E" data-name="Bright Yellow" title="Bright Yellow – ca. Pantone 122C" style="--motif-swatch:#F7D35E"><span class="motif-color-swatch"></span><span class="motif-color-label">Bright Yellow</span></button>
+        <button type="button" class="motif-color" data-color="#C18D45" data-name="Bronze" title="Bronze – ca. Pantone 19-1435TCX" style="--motif-swatch:#C18D45"><span class="motif-color-swatch"></span><span class="motif-color-label">Bronze</span></button>
+        <button type="button" class="motif-color" data-color="#44382B" data-name="Brown" title="Brown – ca. Pantone 7533C" style="--motif-swatch:#44382B"><span class="motif-color-swatch"></span><span class="motif-color-label">Brown</span></button>
+        <button type="button" class="motif-color" data-color="#DDD29A" data-name="Champagne" title="Champagne – ca. Pantone 7499C" style="--motif-swatch:#DDD29A"><span class="motif-color-swatch"></span><span class="motif-color-label">Champagne</span></button>
+        <button type="button" class="motif-color" data-color="#8F6E5B" data-name="Coffee" title="Coffee – ca. Pantone 4715C" style="--motif-swatch:#8F6E5B"><span class="motif-color-swatch"></span><span class="motif-color-label">Coffee</span></button>
+        <button type="button" class="motif-color" data-color="#ED7157" data-name="Coral" title="Coral – ca. Pantone 172U" style="--motif-swatch:#ED7157"><span class="motif-color-swatch"></span><span class="motif-color-label">Coral</span></button>
+        <button type="button" class="motif-color" data-color="#DC4647" data-name="Flame Red" title="Flame Red – ca. Pantone 032C" style="--motif-swatch:#DC4647"><span class="motif-color-swatch"></span><span class="motif-color-label">Flame Red</span></button>
+        <button type="button" class="motif-color" data-color="#B36966" data-name="Flamingo" title="Flamingo – ca. Pantone 18-1629TCX" style="--motif-swatch:#B36966"><span class="motif-color-swatch"></span><span class="motif-color-label">Flamingo</span></button>
+        <button type="button" class="motif-color" data-color="#4FAE4F" data-name="Frog Green" title="Frog Green – ca. Pantone 354C" style="--motif-swatch:#4FAE4F"><span class="motif-color-swatch"></span><span class="motif-color-label">Frog Green</span></button>
+        <button type="button" class="motif-color" data-color="#9E2759" data-name="Fuchsia" title="Fuchsia – ca. Pantone 215C" style="--motif-swatch:#9E2759"><span class="motif-color-swatch"></span><span class="motif-color-label">Fuchsia</span></button>
+        <button type="button" class="motif-color" data-color="#000000" data-name="Glossy Black" title="Glossy Black" style="--motif-swatch:#000000"><span class="motif-color-swatch"></span><span class="motif-color-label">Glossy Black</span></button>
+        <button type="button" class="motif-color" data-color="#A13126" data-name="Glossy Red" title="Glossy Red" style="--motif-swatch:#A13126"><span class="motif-color-swatch"></span><span class="motif-color-label">Glossy Red</span></button>
+        <button type="button" class="motif-color" data-color="#FFFFFF" data-name="Glossy White" title="Glossy White" style="--motif-swatch:#FFFFFF"><span class="motif-color-swatch"></span><span class="motif-color-label">Glossy White</span></button>
+        <button type="button" class="motif-color" data-color="#857451" data-name="Gold Metallic" title="Gold Metallic – ca. Pantone 872C" style="--motif-swatch:#857451"><span class="motif-color-swatch"></span><span class="motif-color-label">Gold Metallic</span></button>
+        <button type="button" class="motif-color" data-color="#2D683D" data-name="Green" title="Green – ca. Pantone 349C" style="--motif-swatch:#2D683D"><span class="motif-color-swatch"></span><span class="motif-color-label">Green</span></button>
+        <button type="button" class="motif-color" data-color="#7E878D" data-name="Grey" title="Grey – ca. Pantone 430C" style="--motif-swatch:#7E878D"><span class="motif-color-swatch"></span><span class="motif-color-label">Grey</span></button>
+        <button type="button" class="motif-color" data-color="#A5CAE8" data-name="Ice Blue" title="Ice Blue – ca. Pantone 291C" style="--motif-swatch:#A5CAE8"><span class="motif-color-swatch"></span><span class="motif-color-label">Ice Blue</span></button>
+        <button type="button" class="motif-color" data-color="#FAF077" data-name="Lemon Yellow" title="Lemon Yellow – ca. Pantone 3945U" style="--motif-swatch:#FAF077"><span class="motif-color-swatch"></span><span class="motif-color-label">Lemon Yellow</span></button>
+        <button type="button" class="motif-color" data-color="#EDD0B7" data-name="Light Apricot" title="Light Apricot – ca. Pantone 475C" style="--motif-swatch:#EDD0B7"><span class="motif-color-swatch"></span><span class="motif-color-label">Light Apricot</span></button>
+        <button type="button" class="motif-color" data-color="#AF6D9E" data-name="Light Berry" title="Light Berry – ca. Pantone 17-3020TCX" style="--motif-swatch:#AF6D9E"><span class="motif-color-swatch"></span><span class="motif-color-label">Light Berry</span></button>
+        <button type="button" class="motif-color" data-color="#CDCDCD" data-name="Light Grey" title="Light Grey – ca. Pantone 179-3C" style="--motif-swatch:#CDCDCD"><span class="motif-color-swatch"></span><span class="motif-color-label">Light Grey</span></button>
+        <button type="button" class="motif-color" data-color="#F6C951" data-name="Medium Yellow" title="Medium Yellow – ca. Pantone 123C" style="--motif-swatch:#F6C951"><span class="motif-color-swatch"></span><span class="motif-color-label">Medium Yellow</span></button>
+        <button type="button" class="motif-color" data-color="#9FD4BE" data-name="Mint" title="Mint – ca. Pantone 337C" style="--motif-swatch:#9FD4BE"><span class="motif-color-swatch"></span><span class="motif-color-label">Mint</span></button>
+        <button type="button" class="motif-color" data-color="#0B1B2B" data-name="Navy Blue" title="Navy Blue – ca. Pantone 296C" style="--motif-swatch:#0B1B2B"><span class="motif-color-swatch"></span><span class="motif-color-label">Navy Blue</span></button>
+        <button type="button" class="motif-color" data-color="#7C2398" data-name="Neon Berry" title="Neon Berry – ca. Pantone 2602C" style="--motif-swatch:#7C2398"><span class="motif-color-swatch"></span><span class="motif-color-label">Neon Berry</span></button>
+        <button type="button" class="motif-color" data-color="#459AD8" data-name="Neon Blue" title="Neon Blue – ca. Pantone 2925C" style="--motif-swatch:#459AD8"><span class="motif-color-swatch"></span><span class="motif-color-label">Neon Blue</span></button>
+        <button type="button" class="motif-color" data-color="#B5257B" data-name="Neon Dark Pink" title="Neon Dark Pink – ca. Pantone 233C" style="--motif-swatch:#B5257B"><span class="motif-color-swatch"></span><span class="motif-color-label">Neon Dark Pink</span></button>
+        <button type="button" class="motif-color" data-color="#72D34C" data-name="Neon Green" title="Neon Green – ca. Pantone 802C" style="--motif-swatch:#72D34C"><span class="motif-color-swatch"></span><span class="motif-color-label">Neon Green</span></button>
+        <button type="button" class="motif-color" data-color="#F3AE5F" data-name="Neon Orange" title="Neon Orange – ca. Pantone 804C" style="--motif-swatch:#F3AE5F"><span class="motif-color-swatch"></span><span class="motif-color-label">Neon Orange</span></button>
+        <button type="button" class="motif-color" data-color="#EB50B1" data-name="Neon Pink" title="Neon Pink – ca. Pantone 806C" style="--motif-swatch:#EB50B1"><span class="motif-color-swatch"></span><span class="motif-color-label">Neon Pink</span></button>
+        <button type="button" class="motif-color" data-color="#EE7A7A" data-name="Neon Red" title="Neon Red – ca. Pantone 805C" style="--motif-swatch:#EE7A7A"><span class="motif-color-swatch"></span><span class="motif-color-label">Neon Red</span></button>
+        <button type="button" class="motif-color" data-color="#E4E855" data-name="Neon Yellow" title="Neon Yellow – ca. Pantone 809C" style="--motif-swatch:#E4E855"><span class="motif-color-swatch"></span><span class="motif-color-label">Neon Yellow</span></button>
+        <button type="button" class="motif-color" data-color="#9AB37F" data-name="Olive" title="Olive – ca. Pantone 577U" style="--motif-swatch:#9AB37F"><span class="motif-color-swatch"></span><span class="motif-color-label">Olive</span></button>
+        <button type="button" class="motif-color" data-color="#CF743E" data-name="Orange" title="Orange – ca. Pantone 30-8C" style="--motif-swatch:#CF743E"><span class="motif-color-swatch"></span><span class="motif-color-label">Orange</span></button>
+        <button type="button" class="motif-color" data-color="#F6E591" data-name="Pastel Yellow" title="Pastel Yellow – ca. Pantone 4-5C" style="--motif-swatch:#F6E591"><span class="motif-color-swatch"></span><span class="motif-color-label">Pastel Yellow</span></button>
+        <button type="button" class="motif-color" data-color="#F5C19E" data-name="Peach Fuzz" title="Peach Fuzz – ca. Pantone 13-1023TCX" style="--motif-swatch:#F5C19E"><span class="motif-color-swatch"></span><span class="motif-color-label">Peach Fuzz</span></button>
+        <button type="button" class="motif-color" data-color="#696AA8" data-name="Peri" title="Peri – ca. Pantone 17-3938TPG" style="--motif-swatch:#696AA8"><span class="motif-color-swatch"></span><span class="motif-color-label">Peri</span></button>
+        <button type="button" class="motif-color" data-color="#21135B" data-name="Purple" title="Purple – ca. Pantone 273C" style="--motif-swatch:#21135B"><span class="motif-color-swatch"></span><span class="motif-color-label">Purple</span></button>
+        <button type="button" class="motif-color" data-color="#A0312B" data-name="Red" title="Red – ca. Pantone 49-8C" style="--motif-swatch:#A0312B"><span class="motif-color-swatch"></span><span class="motif-color-label">Red</span></button>
+        <button type="button" class="motif-color" data-color="#AC7D6F" data-name="Rose Gold" title="Rose Gold – ca. Pantone 54-12C" style="--motif-swatch:#AC7D6F"><span class="motif-color-swatch"></span><span class="motif-color-label">Rose Gold</span></button>
+        <button type="button" class="motif-color" data-color="#35608E" data-name="Royal Blue" title="Royal Blue – ca. Pantone 647C" style="--motif-swatch:#35608E"><span class="motif-color-swatch"></span><span class="motif-color-label">Royal Blue</span></button>
+        <button type="button" class="motif-color" data-color="#B5C1A7" data-name="Sage Green" title="Sage Green – ca. Pantone 2404C" style="--motif-swatch:#B5C1A7"><span class="motif-color-swatch"></span><span class="motif-color-label">Sage Green</span></button>
+        <button type="button" class="motif-color" data-color="#D1BA9A" data-name="Sand Beige" title="Sand Beige – ca. Pantone 22-2C" style="--motif-swatch:#D1BA9A"><span class="motif-color-swatch"></span><span class="motif-color-label">Sand Beige</span></button>
+        <button type="button" class="motif-color" data-color="#8D9093" data-name="Silver Metallic" title="Silver Metallic – ca. Pantone 877C" style="--motif-swatch:#8D9093"><span class="motif-color-swatch"></span><span class="motif-color-label">Silver Metallic</span></button>
+        <button type="button" class="motif-color" data-color="#85C3E4" data-name="Sky Blue" title="Sky Blue – ca. Pantone 297C" style="--motif-swatch:#85C3E4"><span class="motif-color-swatch"></span><span class="motif-color-label">Sky Blue</span></button>
+        <button type="button" class="motif-color" data-color="#BCA1D6" data-name="Violet" title="Violet – ca. Pantone 2567C" style="--motif-swatch:#BCA1D6"><span class="motif-color-swatch"></span><span class="motif-color-label">Violet</span></button>
+        <button type="button" class="motif-color" data-color="#AF3F56" data-name="Viva Magenta" title="Viva Magenta – ca. Pantone 18-1750TPG" style="--motif-swatch:#AF3F56"><span class="motif-color-swatch"></span><span class="motif-color-label">Viva Magenta</span></button>
+        <button type="button" class="motif-color" data-color="#FFFFFF" data-name="White" title="White" style="--motif-swatch:#FFFFFF"><span class="motif-color-swatch"></span><span class="motif-color-label">White</span></button>
+        <button type="button" class="motif-color" data-color="#F4BB47" data-name="Yellow" title="Yellow – ca. Pantone 1235C" style="--motif-swatch:#F4BB47"><span class="motif-color-swatch"></span><span class="motif-color-label">Yellow</span></button>
+      </div>
+      <p class="current-color">Motiv: <strong id="currentMotifColorName">Black</strong></p>
     </section>
 
     <section class="tool-section logo-section">
@@ -157,7 +233,7 @@
 
 
     <footer class="designer-footer">
-      Das Logo wird automatisch im Druckbereich platziert. Ziehen = verschieben, Eckgriffe = skalieren, oberer Griff = drehen.
+      Das gewählte Motiv wird automatisch mittig auf der Vorderseite platziert. Ziehen = verschieben, Eckgriffe = skalieren, oberer Griff = drehen.
     </footer>
 
   </main>
@@ -166,7 +242,7 @@
 
 <script src="shop-config.js?v=hansa1"></script>
 <script src="https://cdn.jsdelivr.net/npm/fabric@5.3.0/dist/fabric.min.js"></script>
-<script src="script.js?v=20260830-1"></script>
+<script src="script.js?v=20260830-hansa-motive-v2"></script>
 
 </body>
 </html>

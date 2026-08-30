@@ -1,6 +1,10 @@
-Kunde/Schule: Hansa Berufskolleg
-Branding: Orange (#f28c00)
-Logo-Datei: shop-logo.jpg
+Hansa Berufskolleg – ShirtDesigner v2
 
-Diese Version basiert auf der geprüften Kunden-/Vereinsvorlage.
-Für spätere Branding-Änderungen genügt in der Regel shop-config.js.
+Änderungen:
+- Nur zwei feste Hansa-Motive auswählbar
+- Kein eigener Datei-Upload
+- Motiv wird standardmäßig mittig auf der Vorderseite platziert
+- Rückseite startet leer
+- Komplette bereitgestellte Motivfarbpalette eingebaut
+- Shirtfarbe und Motivfarbe sind getrennte Funktionen
+- Automatischer Firebase/GitHub-Workflow bleibt kompatibel

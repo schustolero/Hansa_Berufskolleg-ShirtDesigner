@@ -8,7 +8,7 @@ window.SHOP_CONFIG = {
   brandTitle: "Hansa Berufskolleg",
   brandSubtitle: "T-Shirt Konfigurator",
   designerHeading: "Hansa Shirt gestalten",
-  designerIntro: "Logo hochladen, positionieren, skalieren und drehen.",
+  designerIntro: "Motiv auswählen, Farbe bestimmen und auf der Vorderseite gestalten.",
 
   // Hauptfarbe passend zum Hansa-Logo
   accentColor: "#f28c00",
