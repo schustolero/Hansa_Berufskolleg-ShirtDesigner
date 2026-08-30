@@ -519,8 +519,29 @@ if (orderForm) {
     }
 
     // Kurz vor dem Versand sicherstellen, dass die aktuellen Daten im Formular stehen.
+    const totalQuantity = orderItems.reduce((sum, item) => sum + item.quantity, 0);
     formOrderItems.value = orderItemsAsText();
-    formTotalQuantity.value = String(orderItems.reduce((sum, item) => sum + item.quantity, 0));
+    formTotalQuantity.value = String(totalQuantity);
+
+    // Daten nur für die anschließende Bestellbestätigung im Browser zwischenspeichern.
+    try {
+      sessionStorage.setItem("hansaOrderConfirmation", JSON.stringify({
+        name,
+        customerClass,
+        email,
+        totalQuantity,
+        items: orderItems.map(item => ({
+          shirtColor: item.shirtColor,
+          motif: item.motif,
+          motifColor: item.motifColor,
+          size: item.size,
+          quantity: item.quantity
+        }))
+      }));
+    } catch (error) {
+      // Die Bestellung darf auch dann versendet werden, wenn Session Storage blockiert ist.
+    }
+
     sendOrderMessage.textContent = "Bestellung wird gesendet …";
     sendOrderMessage.classList.add("success");
   });
