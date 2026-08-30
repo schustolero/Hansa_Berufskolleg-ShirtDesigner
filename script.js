@@ -339,6 +339,212 @@ canvas.on("object:modified", function(event) {
 
 
 
+// v14: Mehrere unterschiedliche Shirts in einer Bestellung
+const shirtSize = document.getElementById("shirtSize");
+const shirtQuantity = document.getElementById("shirtQuantity");
+const addToOrderBtn = document.getElementById("addToOrderBtn");
+const orderBtn = document.getElementById("orderBtn");
+const orderMessage = document.getElementById("orderMessage");
+const cartBox = document.getElementById("cartBox");
+const cartItems = document.getElementById("cartItems");
+const cartCount = document.getElementById("cartCount");
+const orderModal = document.getElementById("orderModal");
+const orderSummary = document.getElementById("orderSummary");
+const orderForm = document.getElementById("orderForm");
+const formOrderItems = document.getElementById("formOrderItems");
+const formTotalQuantity = document.getElementById("formTotalQuantity");
+const sendOrderMessage = document.getElementById("sendOrderMessage");
+
+let orderItems = [];
+
+function getSelectedMotifName() {
+  const active = document.querySelector(".motif-btn.active");
+  if (!active) return "Noch kein Motiv gewählt";
+  return active.textContent.replace(/\s+/g, " ").trim();
+}
+
+function summaryRow(label, value) {
+  const row = document.createElement("div");
+  row.className = "order-summary-row";
+  const key = document.createElement("span");
+  key.textContent = label;
+  const val = document.createElement("strong");
+  val.textContent = value;
+  row.append(key, val);
+  return row;
+}
+
+function getCurrentShirtSelection() {
+  const size = shirtSize.value;
+  const quantity = Math.max(1, Math.min(99, Number(shirtQuantity.value) || 1));
+  shirtQuantity.value = quantity;
+  const activeMotif = document.querySelector(".motif-btn.active");
+
+  if (!size) {
+    orderMessage.textContent = "Bitte zuerst eine Größe auswählen.";
+    shirtSize.focus();
+    return null;
+  }
+  if (!activeMotif) {
+    orderMessage.textContent = "Bitte zuerst ein Motiv auswählen.";
+    return null;
+  }
+
+  return {
+    id: Date.now() + Math.random(),
+    shirtColor: currentColorName.textContent || "White",
+    motif: getSelectedMotifName(),
+    motifColor: currentMotifColorName.textContent || currentMotifColorLabel,
+    size,
+    quantity
+  };
+}
+
+function renderCart() {
+  const total = orderItems.reduce((sum, item) => sum + item.quantity, 0);
+  cartBox.hidden = orderItems.length === 0;
+  cartCount.textContent = `${total} ${total === 1 ? "Shirt" : "Shirts"}`;
+  cartItems.replaceChildren();
+
+  orderItems.forEach((item, index) => {
+    const card = document.createElement("div");
+    card.className = "cart-item";
+
+    const info = document.createElement("div");
+    info.className = "cart-item-info";
+    const title = document.createElement("strong");
+    title.textContent = `${item.quantity}× ${item.size} · ${item.shirtColor}`;
+    const meta = document.createElement("span");
+    meta.textContent = `${item.motif} · ${item.motifColor}`;
+    info.append(title, meta);
+
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "cart-remove";
+    remove.textContent = "Entfernen";
+    remove.setAttribute("aria-label", `Position ${index + 1} entfernen`);
+    remove.addEventListener("click", () => {
+      orderItems.splice(index, 1);
+      renderCart();
+    });
+
+    card.append(info, remove);
+    cartItems.appendChild(card);
+  });
+}
+
+function addCurrentShirtToOrder() {
+  orderMessage.textContent = "";
+  const item = getCurrentShirtSelection();
+  if (!item) return;
+
+  // Gleiche Kombinationen werden automatisch zusammengefasst.
+  const existing = orderItems.find(entry =>
+    entry.shirtColor === item.shirtColor &&
+    entry.motif === item.motif &&
+    entry.motifColor === item.motifColor &&
+    entry.size === item.size
+  );
+
+  if (existing) existing.quantity = Math.min(99, existing.quantity + item.quantity);
+  else orderItems.push(item);
+
+  renderCart();
+  orderMessage.textContent = "Shirt wurde zur Bestellung hinzugefügt. Du kannst jetzt Farbe, Motiv oder Größe ändern und ein weiteres Shirt hinzufügen.";
+  orderMessage.classList.add("success");
+}
+
+function orderItemsAsText() {
+  return orderItems.map((item, i) =>
+    `${i + 1}. ${item.quantity}x | Größe ${item.size} | Shirt: ${item.shirtColor} | Motiv: ${item.motif} | Motivfarbe: ${item.motifColor}`
+  ).join("\n");
+}
+
+function openOrderSummary() {
+  orderMessage.textContent = "";
+  orderMessage.classList.remove("success");
+  if (!orderItems.length) {
+    orderMessage.textContent = "Bitte zuerst mindestens ein Shirt zur Bestellung hinzufügen.";
+    return;
+  }
+
+  const total = orderItems.reduce((sum, item) => sum + item.quantity, 0);
+  orderSummary.replaceChildren();
+
+  orderItems.forEach((item, i) => {
+    orderSummary.appendChild(summaryRow(
+      `Shirt ${i + 1}`,
+      `${item.quantity}× ${item.size} · ${item.shirtColor} · ${item.motif} · ${item.motifColor}`
+    ));
+  });
+  orderSummary.appendChild(summaryRow("Gesamtmenge", String(total)));
+
+  formOrderItems.value = orderItemsAsText();
+  formTotalQuantity.value = String(total);
+  if (sendOrderMessage) {
+    sendOrderMessage.textContent = "";
+    sendOrderMessage.classList.remove("success");
+  }
+
+  orderModal.hidden = false;
+  document.body.style.overflow = "hidden";
+}
+
+function closeOrderSummary() {
+  orderModal.hidden = true;
+  document.body.style.overflow = "";
+}
+
+if (addToOrderBtn) addToOrderBtn.addEventListener("click", addCurrentShirtToOrder);
+if (orderBtn) orderBtn.addEventListener("click", openOrderSummary);
+document.querySelectorAll("[data-close-order]").forEach(el => el.addEventListener("click", closeOrderSummary));
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !orderModal.hidden) closeOrderSummary(); });
+
+if (orderForm) {
+  orderForm.addEventListener("submit", (event) => {
+    const name = document.getElementById("customerName").value.trim();
+    const customerClass = document.getElementById("customerClass").value.trim();
+    const email = document.getElementById("customerEmail").value.trim();
+
+    if (!orderItems.length) {
+      event.preventDefault();
+      sendOrderMessage.textContent = "Die Bestellung enthält noch keine Shirts.";
+      return;
+    }
+    if (!name || !customerClass || !email) {
+      event.preventDefault();
+      sendOrderMessage.textContent = "Bitte Name, Klasse/Abteilung und E-Mail vollständig ausfüllen.";
+      return;
+    }
+
+    // Kurz vor dem Versand sicherstellen, dass die aktuellen Daten im Formular stehen.
+    formOrderItems.value = orderItemsAsText();
+    formTotalQuantity.value = String(orderItems.reduce((sum, item) => sum + item.quantity, 0));
+    sendOrderMessage.textContent = "Bestellung wird gesendet …";
+    sendOrderMessage.classList.add("success");
+  });
+}
+
+changeShirtColor("#ffffff", "White", "weiss", "");
+  recolorActiveMotif("#000000", "Black");
+  canvas.requestRenderAll();
+});
+
+canvas.on("object:modified", function(event) {
+  const object = event.target;
+  if (!object) return;
+  object.setCoords();
+  const bounds = object.getBoundingRect(true, true);
+  let left = object.left, top = object.top;
+  if (bounds.left < 0) left += -bounds.left;
+  if (bounds.left + bounds.width > canvas.width) left -= bounds.left + bounds.width - canvas.width;
+  if (bounds.top < 0) top += -bounds.top;
+  if (bounds.top + bounds.height > canvas.height) top -= bounds.top + bounds.height - canvas.height;
+  object.set({ left, top }); object.setCoords(); canvas.requestRenderAll(); saveCurrentView();
+});
+
+
+
 // v11: Größe, Menge und Bestellübersicht
 const shirtSize = document.getElementById("shirtSize");
 const shirtQuantity = document.getElementById("shirtQuantity");

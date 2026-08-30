@@ -186,8 +186,16 @@
           <input id="shirtQuantity" type="number" min="1" max="99" value="1" inputmode="numeric">
         </label>
       </div>
-      <button type="button" id="orderBtn" class="primary-btn">Bestellung vorbereiten</button>
+      <button type="button" id="addToOrderBtn" class="primary-btn">Shirt zur Bestellung hinzufügen</button>
       <p id="orderMessage" class="order-message" aria-live="polite"></p>
+      <div id="cartBox" class="cart-box" hidden>
+        <div class="cart-head">
+          <strong>Bestellung</strong>
+          <span id="cartCount">0 Shirts</span>
+        </div>
+        <div id="cartItems" class="cart-items"></div>
+        <button type="button" id="orderBtn" class="primary-btn checkout-btn">Bestellung abschließen</button>
+      </div>
     </section>
 
     <div class="sidebar-bottom">
@@ -253,11 +261,8 @@
       <input type="hidden" name="_subject" value="Neue Hansa Berufskolleg T-Shirt Bestellung">
       <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="T-Shirt Farbe" id="formShirtColor">
-      <input type="hidden" name="Motiv" id="formMotif">
-      <input type="hidden" name="Motivfarbe" id="formMotifColor">
-      <input type="hidden" name="Größe" id="formSize">
-      <input type="hidden" name="Menge" id="formQuantity">
+      <input type="hidden" name="Bestellung" id="formOrderItems">
+      <input type="hidden" name="Gesamtmenge" id="formTotalQuantity">
 
       <label class="contact-field">
         <span>Name *</span>
@@ -287,7 +292,7 @@
 
 <script src="shop-config.js?v=hansa1"></script>
 <script src="https://cdn.jsdelivr.net/npm/fabric@5.3.0/dist/fabric.min.js"></script>
-<script src="script.js?v=13"></script>
+<script src="script.js?v=14"></script>
 
 </body>
 </html>
