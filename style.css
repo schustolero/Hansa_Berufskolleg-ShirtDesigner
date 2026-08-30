@@ -681,3 +681,92 @@ input {
   content: none !important;
   display: none !important;
 }
+
+/* v10 Mobile: kompakter Kopfbereich sowie kleinere Shirt- und Motivfarben */
+@media (max-width: 900px) {
+  .brand {
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    column-gap: 14px;
+    row-gap: 2px;
+    align-items: center;
+    padding: 20px 22px 10px;
+  }
+
+  .brand .shop-brand-logo {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    width: 72px !important;
+    height: 72px !important;
+    max-width: 72px !important;
+    margin: 0 !important;
+    object-fit: contain;
+  }
+
+  .brand-title {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: end;
+    font-size: 22px;
+    line-height: 1.08;
+    margin: 0;
+  }
+
+  .brand-subtitle {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: start;
+    margin: 2px 0 0;
+    font-size: 12px;
+  }
+
+  .shirt-colors {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .shirt-color {
+    min-height: 44px !important;
+    gap: 3px !important;
+  }
+
+  .shirt-color .color-swatch {
+    height: 23px !important;
+  }
+
+  .shirt-color .color-label {
+    font-size: 9px !important;
+    line-height: 1.05;
+  }
+
+  .motif-colors {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    max-height: 360px !important;
+  }
+
+  .motif-color {
+    padding: 5px !important;
+    gap: 4px !important;
+    border-radius: 7px !important;
+  }
+
+  .motif-color-swatch {
+    height: 23px !important;
+  }
+
+  .motif-color-label {
+    font-size: 9px !important;
+    line-height: 1.05 !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .brand .shop-brand-logo {
+    width: 64px !important;
+    height: 64px !important;
+    max-width: 64px !important;
+  }
+  .brand-title { font-size: 20px; }
+}
