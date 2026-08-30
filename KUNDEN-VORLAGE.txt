@@ -1,0 +1,20 @@
+KUNDEN-/VEREINSVORLAGE
+========================
+
+Diese Version basiert auf der gesicherten MASTER-Version.
+
+Für einen neuen Shop/Verein musst du im Normalfall nur shop-config.js ändern:
+- pageTitle
+- brandTitle
+- brandSubtitle
+- accentColor
+- logoFile
+
+Optionales Logo:
+1. Logo als PNG in den gleichen Ordner legen, z.B. shop-logo.png
+2. In shop-config.js setzen:
+   logoFile: "shop-logo.png"
+
+Wichtig:
+- script.js, style.css und die Shirt-Dateien nicht kundenspezifisch verändern, solange es nicht nötig ist.
+- Für jeden Kunden einen eigenen GitHub-Ordner/Repo bzw. später eine zentrale Mandantenlösung verwenden.

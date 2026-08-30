@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="pageTitle">T-Shirt Designer</title>
+  <link rel="stylesheet" href="style.css">
+
+<style id="v3-centering-fix">
+@media (max-width:760px){
+  .workspace{display:flex!important;justify-content:center!important;width:100%!important;padding-left:0!important;padding-right:0!important;}
+  .mockup-stage{margin-left:auto!important;margin-right:auto!important;left:auto!important;right:auto!important;max-width:100%!important;}
+  #shirtMockup,.shirt-mockup{display:block!important;margin:0 auto!important;object-position:center center!important;}
+}
+</style>
+
+</head>
+<body>
+
+<div class="app">
+
+  <aside class="sidebar">
+
+    <div class="brand">
+      <div class="brand-title" id="brandTitle">ShirtDesigner</div>
+      <div class="brand-subtitle" id="brandSubtitle">Logo-Konfigurator</div>
+    </div>
+
+    <section class="tool-section color-section">
+      <h3>T-Shirt Farbe</h3>
+
+      <div class="shirt-colors">
+        <button type="button" class="shirt-color active" data-color="#ffffff" data-id="weiss" data-name="White" aria-label="White" title="White" style="--swatch:#ffffff"><span class="color-swatch"></span><span class="color-label">White</span></button>
+        <button type="button" class="shirt-color" data-color="#111015" data-id="black" data-name="Black" aria-label="Black" title="Black" style="--swatch:#111015"><span class="color-swatch"></span><span class="color-label">Black</span></button>
+        <button type="button" class="shirt-color" data-color="#147fae" data-id="azure-blue" data-name="Azure Blue" aria-label="Azure Blue" title="Azure Blue" style="--swatch:#147fae"><span class="color-swatch"></span><span class="color-label">Azure Blue</span></button>
+        <button type="button" class="shirt-color" data-color="#174d2c" data-id="bottle-green" data-name="Bottle Green" aria-label="Bottle Green" title="Bottle Green" style="--swatch:#174d2c"><span class="color-swatch"></span><span class="color-label">Bottle Green</span></button>
+        <button type="button" class="shirt-color" data-color="#8e151f" data-id="brick-red" data-name="Brick Red" aria-label="Brick Red" title="Brick Red" style="--swatch:#8e151f"><span class="color-swatch"></span><span class="color-label">Brick Red</span></button>
+        <button type="button" class="shirt-color" data-color="#83002f" data-id="burgundy" data-name="Burgundy" aria-label="Burgundy" title="Burgundy" style="--swatch:#83002f"><span class="color-swatch"></span><span class="color-label">Burgundy</span></button>
+        <button type="button" class="shirt-color" data-color="#65462f" data-id="chocolate" data-name="Chocolate" aria-label="Chocolate" title="Chocolate" style="--swatch:#65462f"><span class="color-swatch"></span><span class="color-label">Chocolate</span></button>
+        <button type="button" class="shirt-color" data-color="#687043" data-id="classic-olive" data-name="Classic Olive" aria-label="Classic Olive" title="Classic Olive" style="--swatch:#687043"><span class="color-swatch"></span><span class="color-label">Classic Olive</span></button>
+        <button type="button" class="shirt-color" data-color="#4f5054" data-id="dark-grey-heather" data-name="Dark Grey Heather" data-pattern="heather" aria-label="Dark Grey Heather" title="Dark Grey Heather" style="--swatch:#4f5054"><span class="color-swatch"></span><span class="color-label">Dark Grey Heather</span></button>
+        <button type="button" class="shirt-color" data-color="#001536" data-id="deep-navy" data-name="Deep Navy" aria-label="Deep Navy" title="Deep Navy" style="--swatch:#001536"><span class="color-swatch"></span><span class="color-label">Deep Navy</span></button>
+        <button type="button" class="shirt-color" data-color="#ed0078" data-id="fuchsia" data-name="Fuchsia" aria-label="Fuchsia" title="Fuchsia" style="--swatch:#ed0078"><span class="color-swatch"></span><span class="color-label">Fuchsia</span></button>
+        <button type="button" class="shirt-color" data-color="#963b69" data-id="heather-burgundy" data-name="Heather Burgundy" data-pattern="heather" aria-label="Heather Burgundy" title="Heather Burgundy" style="--swatch:#963b69"><span class="color-swatch"></span><span class="color-label">Heather Burgundy</span></button>
+        <button type="button" class="shirt-color" data-color="#cfd0d2" data-id="heather-grey" data-name="Heather Grey" data-pattern="heather" aria-label="Heather Grey" title="Heather Grey" style="--swatch:#cfd0d2"><span class="color-swatch"></span><span class="color-label">Heather Grey</span></button>
+        <button type="button" class="shirt-color" data-color="#583078" data-id="heather-purple" data-name="Heather Purple" data-pattern="heather" aria-label="Heather Purple" title="Heather Purple" style="--swatch:#583078"><span class="color-swatch"></span><span class="color-label">Heather Purple</span></button>
+        <button type="button" class="shirt-color" data-color="#00a651" data-id="kelly-green" data-name="Kelly Green" aria-label="Kelly Green" title="Kelly Green" style="--swatch:#00a651"><span class="color-swatch"></span><span class="color-label">Kelly Green</span></button>
+        <button type="button" class="shirt-color" data-color="#8a7017" data-id="khaki" data-name="Khaki" aria-label="Khaki" title="Khaki" style="--swatch:#8a7017"><span class="color-swatch"></span><span class="color-label">Khaki</span></button>
+        <button type="button" class="shirt-color" data-color="#625754" data-id="light-graphite" data-name="Light Graphite (Solid)" aria-label="Light Graphite (Solid)" title="Light Graphite (Solid)" style="--swatch:#625754"><span class="color-swatch"></span><span class="color-label">Light Graphite (Solid)</span></button>
+        <button type="button" class="shirt-color" data-color="#e8a0c4" data-id="light-pink" data-name="Light Pink" aria-label="Light Pink" title="Light Pink" style="--swatch:#e8a0c4"><span class="color-swatch"></span><span class="color-label">Light Pink</span></button>
+        <button type="button" class="shirt-color" data-color="#8cc152" data-id="lime" data-name="Lime" aria-label="Lime" title="Lime" style="--swatch:#8cc152"><span class="color-swatch"></span><span class="color-label">Lime</span></button>
+        <button type="button" class="shirt-color" data-color="#fff7d7" data-id="natural" data-name="Natural" aria-label="Natural" title="Natural" style="--swatch:#fff7d7"><span class="color-swatch"></span><span class="color-label">Natural</span></button>
+        <button type="button" class="shirt-color" data-color="#001b3f" data-id="navy" data-name="Navy" aria-label="Navy" title="Navy" style="--swatch:#001b3f"><span class="color-swatch"></span><span class="color-label">Navy</span></button>
+        <button type="button" class="shirt-color" data-color="#ed4b00" data-id="orange" data-name="Orange" aria-label="Orange" title="Orange" style="--swatch:#ed4b00"><span class="color-swatch"></span><span class="color-label">Orange</span></button>
+        <button type="button" class="shirt-color" data-color="#4d1688" data-id="purple" data-name="Purple" aria-label="Purple" title="Purple" style="--swatch:#4d1688"><span class="color-swatch"></span><span class="color-label">Purple</span></button>
+        <button type="button" class="shirt-color" data-color="#f20d09" data-id="red" data-name="Red" aria-label="Red" title="Red" style="--swatch:#f20d09"><span class="color-swatch"></span><span class="color-label">Red</span></button>
+        <button type="button" class="shirt-color" data-color="#5d9d7b" data-id="retro-heather-green" data-name="Retro Heather Green" data-pattern="heather" aria-label="Retro Heather Green" title="Retro Heather Green" style="--swatch:#5d9d7b"><span class="color-swatch"></span><span class="color-label">Retro Heather Green</span></button>
+        <button type="button" class="shirt-color" data-color="#5166a8" data-id="retro-heather-royal" data-name="Retro Heather Royal" data-pattern="heather" aria-label="Retro Heather Royal" title="Retro Heather Royal" style="--swatch:#5166a8"><span class="color-swatch"></span><span class="color-label">Retro Heather Royal</span></button>
+        <button type="button" class="shirt-color" data-color="#0758b2" data-id="royal-blue" data-name="Royal Blue" aria-label="Royal Blue" title="Royal Blue" style="--swatch:#0758b2"><span class="color-swatch"></span><span class="color-label">Royal Blue</span></button>
+        <button type="button" class="shirt-color" data-color="#72c2e6" data-id="sky-blue" data-name="Sky Blue" aria-label="Sky Blue" title="Sky Blue" style="--swatch:#72c2e6"><span class="color-swatch"></span><span class="color-label">Sky Blue</span></button>
+        <button type="button" class="shirt-color" data-color="#ffb511" data-id="sunflower" data-name="Sunflower" aria-label="Sunflower" title="Sunflower" style="--swatch:#ffb511"><span class="color-swatch"></span><span class="color-label">Sunflower</span></button>
+        <button type="button" class="shirt-color" data-color="#626a86" data-id="vintage-heather-navy" data-name="Vintage Heather Navy" data-pattern="heather" aria-label="Vintage Heather Navy" title="Vintage Heather Navy" style="--swatch:#626a86"><span class="color-swatch"></span><span class="color-label">Vintage Heather Navy</span></button>
+        <button type="button" class="shirt-color" data-color="#a64b64" data-id="vintage-heather-red" data-name="Vintage Heather Red" data-pattern="heather" aria-label="Vintage Heather Red" title="Vintage Heather Red" style="--swatch:#a64b64"><span class="color-swatch"></span><span class="color-label">Vintage Heather Red</span></button>
+        <button type="button" class="shirt-color" data-color="#ffe600" data-id="yellow" data-name="Yellow" aria-label="Yellow" title="Yellow" style="--swatch:#ffe600"><span class="color-swatch"></span><span class="color-label">Yellow</span></button>
+      </div>
+
+      <p class="current-color">
+        Ausgewählt: <strong id="currentColorName">White</strong>
+      </p>
+    </section>
+
+    <section class="tool-section upload-section">
+      <h3>Logo / Bild</h3>
+
+      <label class="upload-btn">
+        Logo hochladen
+        <input type="file" id="imageUpload" accept="image/png,image/jpeg,image/webp">
+      </label>
+
+      <p class="hint">PNG, JPG oder WEBP</p>
+    </section>
+
+    <section class="tool-section logo-section">
+      <h3>Ausgewähltes Logo</h3>
+
+      <button type="button" id="centerBtn" class="secondary-btn">
+        Mittig platzieren
+      </button>
+
+      <div class="button-grid">
+        <button type="button" id="duplicateBtn" class="secondary-btn">
+          Duplizieren
+        </button>
+
+        <button type="button" id="deleteBtn" class="danger-btn">
+          Löschen
+        </button>
+      </div>
+    </section>
+
+    <section class="tool-section view-section">
+      <h3>Ansicht</h3>
+
+      <div class="view-switch">
+        <button type="button" class="view-btn active" data-view="front">
+          Vorderseite
+        </button>
+
+        <button type="button" class="view-btn" data-view="back">
+          Rückseite
+        </button>
+      </div>
+    </section>
+
+    <div class="sidebar-bottom">
+      <button type="button" id="resetBtn" class="secondary-btn">
+        Design zurücksetzen
+      </button>
+    </div>
+
+  </aside>
+
+
+  <main class="designer-area">
+
+    <header class="designer-header">
+      <div>
+        <h1 id="designerHeading">T-Shirt gestalten</h1>
+        <p id="designerIntro">Logo hochladen, positionieren, skalieren und drehen.</p>
+      </div>
+
+      <div class="designer-status" id="designerStatus">
+        Vorderseite
+      </div>
+    </header>
+
+
+    <div class="workspace">
+
+      <div class="mockup-stage">
+
+        <img
+          id="shirtMockup"
+          class="shirt-mockup"
+          src="shirt-front-template.png"
+          alt="T-Shirt Vorderseite"
+        >
+        <div id="shirtColorLayer" class="shirt-color-overlay" aria-hidden="true" style="display:none"></div>
+
+        <div class="print-zone" id="printZone">
+          <canvas id="designCanvas" width="260" height="330"></canvas>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <footer class="designer-footer">
+      Das Logo wird automatisch im Druckbereich platziert. Ziehen = verschieben, Eckgriffe = skalieren, oberer Griff = drehen.
+    </footer>
+
+  </main>
+
+</div>
+
+<script src="shop-config.js?v=hansa1"></script>
+<script src="https://cdn.jsdelivr.net/npm/fabric@5.3.0/dist/fabric.min.js"></script>
+<script src="script.js?v=20260830-1"></script>
+
+</body>
+</html>

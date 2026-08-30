@@ -1,0 +1,6 @@
+Kunde/Schule: Hansa Berufskolleg
+Branding: Orange (#f28c00)
+Logo-Datei: shop-logo.jpg
+
+Diese Version basiert auf der geprüften Kunden-/Vereinsvorlage.
+Für spätere Branding-Änderungen genügt in der Regel shop-config.js.
