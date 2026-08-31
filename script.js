@@ -577,6 +577,31 @@ if (orderForm) {
       if (formOrderNumber) formOrderNumber.value = orderNumber;
       if (formTotalPrice) formTotalPrice.value = formatEuro(totalPrice);
 
+      const phone = document.getElementById("customerPhone").value.trim();
+      const orderPayload = {
+        orderNumber,
+        name,
+        customerClass,
+        email,
+        phone,
+        totalQuantity,
+        unitPrice: SHIRT_PRICE,
+        totalPrice,
+        status: "Neu",
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        items: orderItems.map(item => ({
+          shirtColor: item.shirtColor,
+          motif: item.motif,
+          motifColor: item.motifColor,
+          size: item.size,
+          quantity: item.quantity,
+          linePrice: item.quantity * SHIRT_PRICE
+        }))
+      };
+
+      // Bestellung zusätzlich zentral in Firestore speichern, damit sie im Admin-Bereich erscheint.
+      await getFirestoreDb().collection("orders").doc(orderNumber).set(orderPayload);
+
       try {
         sessionStorage.setItem("hansaOrderConfirmation", JSON.stringify({
           orderNumber,
@@ -586,13 +611,7 @@ if (orderForm) {
           totalQuantity,
           unitPrice: SHIRT_PRICE,
           totalPrice,
-          items: orderItems.map(item => ({
-            shirtColor: item.shirtColor,
-            motif: item.motif,
-            motifColor: item.motifColor,
-            size: item.size,
-            quantity: item.quantity
-          }))
+          items: orderPayload.items
         }));
       } catch (error) {}
 

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <title>Hansa Berufskolleg – Bestellungen</title>
+  <link rel="stylesheet" href="admin.css?v=21">
+</head>
+<body>
+  <main class="admin-shell">
+    <header class="admin-header">
+      <div class="brand-row">
+        <img src="shop-logo.jpg" alt="Hansa Berufskolleg" class="admin-logo">
+        <div>
+          <h1>Bestellungen</h1>
+          <p>Hansa Berufskolleg</p>
+        </div>
+      </div>
+      <button id="logoutBtn" class="ghost-btn" type="button" hidden>Abmelden</button>
+    </header>
+
+    <section id="loginCard" class="panel login-card">
+      <h2>Admin-Login</h2>
+      <p>Melde dich mit dem in Firebase angelegten Admin-Konto an.</p>
+      <form id="loginForm">
+        <label>
+          <span>E-Mail</span>
+          <input id="adminEmail" type="email" value="textilien@proton.me" required autocomplete="username">
+        </label>
+        <label>
+          <span>Passwort</span>
+          <input id="adminPassword" type="password" required autocomplete="current-password">
+        </label>
+        <button class="primary-btn" type="submit">Anmelden</button>
+        <p id="loginMessage" class="message" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section id="dashboard" hidden>
+      <div class="stats-grid">
+        <article class="stat-card"><span>Bestellungen</span><strong id="statOrders">0</strong></article>
+        <article class="stat-card"><span>Shirts</span><strong id="statShirts">0</strong></article>
+        <article class="stat-card"><span>Umsatz</span><strong id="statRevenue">0,00 €</strong></article>
+      </div>
+
+      <div class="toolbar panel">
+        <div>
+          <h2>Bestellübersicht</h2>
+          <p id="lastUpdate">Noch nicht geladen</p>
+        </div>
+        <button id="refreshBtn" class="ghost-btn" type="button">Aktualisieren</button>
+      </div>
+
+      <div id="ordersList" class="orders-list"></div>
+      <p id="ordersMessage" class="empty-message" hidden>Keine Bestellungen vorhanden.</p>
+    </section>
+  </main>
+
+  <script src="/__/firebase/8.10.1/firebase-app.js"></script>
+  <script src="/__/firebase/8.10.1/firebase-auth.js"></script>
+  <script src="/__/firebase/8.10.1/firebase-firestore.js"></script>
+  <script src="/__/firebase/init.js"></script>
+  <script src="admin.js?v=21"></script>
+</body>
+</html>
