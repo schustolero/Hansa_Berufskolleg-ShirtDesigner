@@ -2,33 +2,24 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    function isAdmin() {
-      return request.auth != null
-        && request.auth.token.email == 'textilien@proton.me';
-    }
 
+    // Zentrale Bestellnummer
     match /counters/orderCounter {
-      allow read: if true;
-      allow create: if request.resource.data.nextNumber == 101;
-      allow update: if request.resource.data.nextNumber == resource.data.nextNumber + 1;
-      allow delete: if false;
+      allow read, write: if true;
     }
 
+    // Bestellungen
     match /orders/{orderId} {
-      allow create: if request.resource.data.orderNumber == orderId
-        && request.resource.data.status == 'Neu'
-        && request.resource.data.totalQuantity is int
-        && request.resource.data.totalQuantity > 0
-        && request.resource.data.totalPrice is number
-        && request.resource.data.totalPrice >= 15
-        && request.resource.data.name is string
-        && request.resource.data.customerClass is string
-        && request.resource.data.email is string
-        && request.resource.data.items is list;
+      // Kunden duerfen neue Bestellungen anlegen
+      allow create: if true;
 
-      allow read, update, delete: if isAdmin();
+      // Nur eingeloggter Admin darf Bestellungen lesen/ändern/löschen
+      allow read, update, delete:
+        if request.auth != null
+        && request.auth.token.email == "textilien@proton.me";
     }
 
+    // Alles andere bleibt gesperrt
     match /{document=**} {
       allow read, write: if false;
     }

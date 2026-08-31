@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#ffffff">
   <title>Hansa Berufskolleg – Bestellungen</title>
-  <link rel="stylesheet" href="admin.css?v=21">
+  <link rel="stylesheet" href="admin.css?v=22">
 </head>
 <body>
   <main class="admin-shell">
@@ -52,6 +52,23 @@
         <button id="refreshBtn" class="ghost-btn" type="button">Aktualisieren</button>
       </div>
 
+      <div class="filters panel">
+        <label class="search-field">
+          <span>Suche</span>
+          <input id="searchInput" type="search" placeholder="Bestellnummer, Name, Klasse …" autocomplete="off">
+        </label>
+        <label class="status-filter-field">
+          <span>Status</span>
+          <select id="statusFilter">
+            <option value="Alle">Alle</option>
+            <option value="Neu">Neu</option>
+            <option value="In Bearbeitung">In Bearbeitung</option>
+            <option value="Fertig">Fertig</option>
+            <option value="Abgeholt">Abgeholt</option>
+          </select>
+        </label>
+      </div>
+
       <div id="ordersList" class="orders-list"></div>
       <p id="ordersMessage" class="empty-message" hidden>Keine Bestellungen vorhanden.</p>
     </section>
@@ -61,6 +78,6 @@
   <script src="/__/firebase/8.10.1/firebase-auth.js"></script>
   <script src="/__/firebase/8.10.1/firebase-firestore.js"></script>
   <script src="/__/firebase/init.js"></script>
-  <script src="admin.js?v=21"></script>
+  <script src="admin.js?v=22"></script>
 </body>
 </html>

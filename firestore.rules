@@ -2,19 +2,24 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /system/orderCounter {
-      allow read: if true;
 
-      allow create: if request.resource.data.keys().hasOnly(['nextNumber'])
-                    && request.resource.data.nextNumber == 101;
-
-      allow update: if request.resource.data.keys().hasOnly(['nextNumber'])
-                    && request.resource.data.nextNumber == resource.data.nextNumber + 1
-                    && request.resource.data.nextNumber >= 101;
-
-      allow delete: if false;
+    // Zentrale Bestellnummer
+    match /counters/orderCounter {
+      allow read, write: if true;
     }
 
+    // Bestellungen
+    match /orders/{orderId} {
+      // Kunden duerfen neue Bestellungen anlegen
+      allow create: if true;
+
+      // Nur eingeloggter Admin darf Bestellungen lesen/ändern/löschen
+      allow read, update, delete:
+        if request.auth != null
+        && request.auth.token.email == "textilien@proton.me";
+    }
+
+    // Alles andere bleibt gesperrt
     match /{document=**} {
       allow read, write: if false;
     }
