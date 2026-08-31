@@ -837,3 +837,5 @@ input {
   .cart-item-info strong { font-size:10px; }
   .cart-item-info span { font-size:9px; }
 }
+
+.order-price-info{margin:0 0 12px;color:var(--muted);font-size:12px}.order-price-info strong{color:var(--text)}

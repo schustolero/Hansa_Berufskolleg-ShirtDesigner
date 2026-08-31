@@ -354,8 +354,45 @@ const orderForm = document.getElementById("orderForm");
 const formOrderItems = document.getElementById("formOrderItems");
 const formTotalQuantity = document.getElementById("formTotalQuantity");
 const sendOrderMessage = document.getElementById("sendOrderMessage");
+const formOrderNumber = document.getElementById("formOrderNumber");
+const formTotalPrice = document.getElementById("formTotalPrice");
 
+const SHIRT_PRICE = 15;
+const ORDER_PREFIX = "HBK-260901";
+const ORDER_COUNTER_DOC = "counters/orderCounter";
 let orderItems = [];
+let firestoreDb = null;
+
+function formatEuro(value) {
+  return new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(value);
+}
+
+function getFirestoreDb() {
+  if (firestoreDb) return firestoreDb;
+  if (!window.firebase || !firebase.apps || !firebase.apps.length || !firebase.firestore) {
+    throw new Error("Firebase/Firestore ist nicht verfügbar.");
+  }
+  firestoreDb = firebase.firestore();
+  return firestoreDb;
+}
+
+async function createCentralOrderNumber() {
+  const db = getFirestoreDb();
+  const ref = db.doc(ORDER_COUNTER_DOC);
+
+  return db.runTransaction(async transaction => {
+    const snapshot = await transaction.get(ref);
+    let nextNumber = 100;
+
+    if (snapshot.exists) {
+      const stored = Number(snapshot.data().nextNumber);
+      if (Number.isInteger(stored) && stored >= 100) nextNumber = stored;
+    }
+
+    transaction.set(ref, { nextNumber: nextNumber + 1 });
+    return `${ORDER_PREFIX}-${String(nextNumber).padStart(3, "0")}`;
+  });
+}
 
 function getSelectedMotifName() {
   const active = document.querySelector(".motif-btn.active");
@@ -413,7 +450,7 @@ function renderCart() {
     const info = document.createElement("div");
     info.className = "cart-item-info";
     const title = document.createElement("strong");
-    title.textContent = `${item.quantity}× ${item.size} · ${item.shirtColor}`;
+    title.textContent = `${item.quantity}× ${item.size} · ${item.shirtColor} · ${formatEuro(item.quantity * SHIRT_PRICE)}`;
     const meta = document.createElement("span");
     meta.textContent = `${item.motif} · ${item.motifColor}`;
     info.append(title, meta);
@@ -457,7 +494,7 @@ function addCurrentShirtToOrder() {
 
 function orderItemsAsText() {
   return orderItems.map((item, i) =>
-    `${i + 1}. ${item.quantity}x | Größe ${item.size} | Shirt: ${item.shirtColor} | Motiv: ${item.motif} | Motivfarbe: ${item.motifColor}`
+    `${i + 1}. ${item.quantity}x | Größe ${item.size} | Shirt: ${item.shirtColor} | Motiv: ${item.motif} | Motivfarbe: ${item.motifColor} | Preis: ${formatEuro(item.quantity * SHIRT_PRICE)}`
   ).join("\n");
 }
 
@@ -470,18 +507,23 @@ function openOrderSummary() {
   }
 
   const total = orderItems.reduce((sum, item) => sum + item.quantity, 0);
+  const totalPrice = total * SHIRT_PRICE;
   orderSummary.replaceChildren();
 
+  orderSummary.appendChild(summaryRow("Bestellnummer", "wird beim Absenden vergeben"));
   orderItems.forEach((item, i) => {
     orderSummary.appendChild(summaryRow(
       `Shirt ${i + 1}`,
-      `${item.quantity}× ${item.size} · ${item.shirtColor} · ${item.motif} · ${item.motifColor}`
+      `${item.quantity}× ${item.size} · ${item.shirtColor} · ${item.motif} · ${item.motifColor} · ${formatEuro(item.quantity * SHIRT_PRICE)}`
     ));
   });
   orderSummary.appendChild(summaryRow("Gesamtmenge", String(total)));
+  orderSummary.appendChild(summaryRow("Gesamtpreis", formatEuro(totalPrice)));
 
   formOrderItems.value = orderItemsAsText();
   formTotalQuantity.value = String(total);
+  if (formOrderNumber) formOrderNumber.value = "";
+  if (formTotalPrice) formTotalPrice.value = formatEuro(totalPrice);
   if (sendOrderMessage) {
     sendOrderMessage.textContent = "";
     sendOrderMessage.classList.remove("success");
@@ -502,48 +544,66 @@ document.querySelectorAll("[data-close-order]").forEach(el => el.addEventListene
 document.addEventListener("keydown", e => { if (e.key === "Escape" && !orderModal.hidden) closeOrderSummary(); });
 
 if (orderForm) {
-  orderForm.addEventListener("submit", (event) => {
+  orderForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
     const name = document.getElementById("customerName").value.trim();
     const customerClass = document.getElementById("customerClass").value.trim();
     const email = document.getElementById("customerEmail").value.trim();
+    const sendOrderBtn = document.getElementById("sendOrderBtn");
 
     if (!orderItems.length) {
-      event.preventDefault();
       sendOrderMessage.textContent = "Die Bestellung enthält noch keine Shirts.";
       return;
     }
     if (!name || !customerClass || !email) {
-      event.preventDefault();
       sendOrderMessage.textContent = "Bitte Name, Klasse/Abteilung und E-Mail vollständig ausfüllen.";
       return;
     }
 
-    // Kurz vor dem Versand sicherstellen, dass die aktuellen Daten im Formular stehen.
-    const totalQuantity = orderItems.reduce((sum, item) => sum + item.quantity, 0);
-    formOrderItems.value = orderItemsAsText();
-    formTotalQuantity.value = String(totalQuantity);
+    if (!orderForm.reportValidity()) return;
 
-    // Daten nur für die anschließende Bestellbestätigung im Browser zwischenspeichern.
-    try {
-      sessionStorage.setItem("hansaOrderConfirmation", JSON.stringify({
-        name,
-        customerClass,
-        email,
-        totalQuantity,
-        items: orderItems.map(item => ({
-          shirtColor: item.shirtColor,
-          motif: item.motif,
-          motifColor: item.motifColor,
-          size: item.size,
-          quantity: item.quantity
-        }))
-      }));
-    } catch (error) {
-      // Die Bestellung darf auch dann versendet werden, wenn Session Storage blockiert ist.
-    }
-
-    sendOrderMessage.textContent = "Bestellung wird gesendet …";
+    if (sendOrderBtn) sendOrderBtn.disabled = true;
+    sendOrderMessage.textContent = "Bestellnummer wird vergeben …";
     sendOrderMessage.classList.add("success");
+
+    try {
+      const totalQuantity = orderItems.reduce((sum, item) => sum + item.quantity, 0);
+      const totalPrice = totalQuantity * SHIRT_PRICE;
+      const orderNumber = await createCentralOrderNumber();
+
+      formOrderItems.value = orderItemsAsText();
+      formTotalQuantity.value = String(totalQuantity);
+      if (formOrderNumber) formOrderNumber.value = orderNumber;
+      if (formTotalPrice) formTotalPrice.value = formatEuro(totalPrice);
+
+      try {
+        sessionStorage.setItem("hansaOrderConfirmation", JSON.stringify({
+          orderNumber,
+          name,
+          customerClass,
+          email,
+          totalQuantity,
+          unitPrice: SHIRT_PRICE,
+          totalPrice,
+          items: orderItems.map(item => ({
+            shirtColor: item.shirtColor,
+            motif: item.motif,
+            motifColor: item.motifColor,
+            size: item.size,
+            quantity: item.quantity
+          }))
+        }));
+      } catch (error) {}
+
+      sendOrderMessage.textContent = `Bestellnummer ${orderNumber} vergeben. Bestellung wird gesendet …`;
+      orderForm.submit();
+    } catch (error) {
+      console.error("Bestellnummer konnte nicht vergeben werden:", error);
+      sendOrderMessage.classList.remove("success");
+      sendOrderMessage.textContent = "Die Bestellnummer konnte nicht vergeben werden. Bitte kurz erneut versuchen.";
+      if (sendOrderBtn) sendOrderBtn.disabled = false;
+    }
   });
 }
 

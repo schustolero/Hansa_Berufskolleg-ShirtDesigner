@@ -1,0 +1,22 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /system/orderCounter {
+      allow read: if true;
+
+      allow create: if request.resource.data.keys().hasOnly(['nextNumber'])
+                    && request.resource.data.nextNumber == 101;
+
+      allow update: if request.resource.data.keys().hasOnly(['nextNumber'])
+                    && request.resource.data.nextNumber == resource.data.nextNumber + 1
+                    && request.resource.data.nextNumber >= 101;
+
+      allow delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

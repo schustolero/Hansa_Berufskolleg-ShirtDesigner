@@ -172,6 +172,7 @@
 
     <section class="tool-section order-section">
       <h3>Größe & Menge</h3>
+      <p class="order-price-info"><strong>15,00 € pro Shirt</strong> · alle Größen und Motive</p>
       <div class="order-fields">
         <label class="order-field">
           <span>Größe</span>
@@ -264,6 +265,8 @@
       <input type="hidden" name="_next" value="https://hansa-berufskolleg.web.app/danke.html">
       <input type="hidden" name="Bestellung" id="formOrderItems">
       <input type="hidden" name="Gesamtmenge" id="formTotalQuantity">
+      <input type="hidden" name="Bestellnummer" id="formOrderNumber">
+      <input type="hidden" name="Gesamtpreis" id="formTotalPrice">
 
       <label class="contact-field">
         <span>Name *</span>
@@ -291,9 +294,12 @@
   </div>
 </div>
 
-<script src="shop-config.js?v=hansa17"></script>
+<script src="shop-config.js?v=hansa20"></script>
 <script src="https://cdn.jsdelivr.net/npm/fabric@5.3.0/dist/fabric.min.js"></script>
-<script src="script.js?v=17"></script>
+<script src="/__/firebase/8.10.1/firebase-app.js"></script>
+<script src="/__/firebase/8.10.1/firebase-firestore.js"></script>
+<script src="/__/firebase/init.js"></script>
+<script src="script.js?v=20"></script>
 
 </body>
 </html>

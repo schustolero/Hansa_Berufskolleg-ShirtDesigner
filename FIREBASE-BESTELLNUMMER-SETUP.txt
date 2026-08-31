@@ -1,0 +1,18 @@
+HANSA BERUFSKOLLEG – ZENTRALE BESTELLNUMMERN
+
+Startnummer: HBK-260901-100
+Preis: 15,00 EUR pro Shirt
+
+Einmalige Einrichtung in Firebase:
+1. Firebase Console öffnen und Projekt „Hansa Berufskolleg“ auswählen.
+2. Links „Build“ > „Firestore Database“ öffnen.
+3. „Datenbank erstellen“ anklicken.
+4. Produktionsmodus auswählen und eine europäische Region wählen.
+5. Danach oben den Tab „Regeln“ öffnen.
+6. Den Inhalt aus firestore.rules vollständig einfügen und „Veröffentlichen“ wählen.
+
+Wichtig:
+- Das Dokument system/orderCounter muss NICHT manuell angelegt werden.
+- Die erste Bestellung legt es automatisch an und erhält HBK-260901-100.
+- Jede weitere Bestellung erhält zentral 101, 102, 103 usw.
+- Dadurch bekommen unterschiedliche Handys/Computer keine doppelte Nummer.
